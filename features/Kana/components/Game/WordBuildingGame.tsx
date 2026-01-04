@@ -340,7 +340,7 @@ const WordBuildingGame = ({
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
-        ((event.ctrlKey || event.metaKey) && event.key === 'Enter') ||
+        event.key === 'Enter' ||
         event.code === 'Space' ||
         event.key === ' '
       ) {
@@ -536,7 +536,7 @@ const WordBuildingGame = ({
 
       {/* Answer Row Area */}
       <div className='flex w-full flex-col items-center'>
-        <div className='flex min-h-[5rem] w-full items-center border-b border-[var(--border-color)] px-2 pb-2 md:w-3/4 lg:w-2/3 xl:w-1/2'>
+        <div className='flex min-h-[5rem] w-full items-center border-b-2 border-[var(--border-color)] px-2 pb-2 md:w-3/4 lg:w-2/3 xl:w-1/2'>
           <motion.div
             className='flex flex-row flex-wrap justify-start gap-3'
             variants={celebrationContainerVariants}
