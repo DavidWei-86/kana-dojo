@@ -222,7 +222,7 @@ const WelcomeModal = () => {
               <ActionButton
                 className='py-4 text-xl font-semibold tracking-wide uppercase'
                 borderRadius='3xl'
-                borderBottomThickness={8}
+                borderBottomThickness={16}
                 onClick={handleTryDemo}
               >
                 <CircleStar
