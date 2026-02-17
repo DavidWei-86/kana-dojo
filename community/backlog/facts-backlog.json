@@ -393,12 +393,12 @@
     "id": 66,
     "fact": "Japan has a museum entirely dedicated to parasites in Tokyo, featuring a 9-meter tapeworm as its star attraction.",
     "issued": false,
-    "completed": false
+    "completed": true
   },
   {
     "id": 67,
     "fact": "There's a Japanese practice called 'kuuki wo yomu' (ç©ºæ°—ã‚’èª­ã‚€) - reading the air - understanding unspoken social cues.",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
