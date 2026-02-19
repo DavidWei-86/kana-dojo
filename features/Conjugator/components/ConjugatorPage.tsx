@@ -123,76 +123,81 @@ export default function ConjugatorPage({ locale = 'en' }: ConjugatorPageProps) {
 
   return (
     <div
-      className='mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 sm:gap-16 sm:px-6'
+      className='mx-auto flex w-full max-w-7xl flex-col px-4 py-8 sm:px-10 sm:py-20'
       role='main'
       aria-label='Japanese verb conjugator'
     >
-      {/* Header Section */}
-      <header className='relative flex flex-col items-center gap-8'>
-        <div className='flex flex-col items-center text-center'>
+      {/* Immersive Header Section */}
+      <header className='relative mb-20 flex flex-col items-center text-center'>
+        <div className='absolute -top-10 -left-10 h-64 w-64 rounded-full bg-(--main-color)/5 blur-3xl' />
+
+        <div className='flex flex-col items-center'>
           <div
-            className='mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-(--main-color)/5 ring-1 ring-(--main-color)/10'
+            className='mb-8 flex h-16 w-16 items-center justify-center rounded-3xl bg-(--background-color) shadow-2xl ring-1 shadow-black/5 ring-(--border-color)/20'
             aria-hidden='true'
           >
-            <Languages className='h-7 w-7 text-(--main-color)' />
+            <Languages className='h-8 w-8 text-(--main-color)' />
           </div>
-          <h1 className='relative text-4xl font-black tracking-tight text-(--main-color) sm:text-6xl lg:text-7xl'>
-            <span className='hero-text-glow bg-gradient-to-br from-(--main-color) to-(--secondary-color) bg-clip-text text-transparent'>
-              Japanese Verb
+
+          <h1 className='relative flex flex-col items-center gap-2'>
+            <span className='text-xs font-black tracking-[0.5em] text-(--secondary-color) uppercase opacity-40'>
+              The Grand Lexicon
             </span>
-            <span className='mt-2 block font-serif text-(--secondary-color) italic sm:mt-0 sm:ml-4 sm:inline'>
-              Conjugator
+            <span className='flex flex-col text-5xl font-black tracking-tighter text-(--main-color) sm:text-7xl lg:text-9xl'>
+              <span>Japanese Verb</span>
+              <span className='font-serif text-(--secondary-color) italic opacity-80 sm:-mt-4'>
+                Conjugator
+              </span>
             </span>
           </h1>
-          <p className='mt-6 max-w-2xl text-lg leading-relaxed font-medium text-(--secondary-color) opacity-70 sm:text-xl'>
-            A precision-engineered tool for mastering Japanese grammar.
-            Experience the art of conjugation with absolute clarity.
+
+          <p className='mt-10 max-w-xl text-lg leading-relaxed font-medium text-(--secondary-color) opacity-60 sm:text-2xl'>
+            Precision morphological synthesis. Explore every transformation with
+            surgical clarity.
           </p>
         </div>
 
-        {/* Share Button (Material FAB style approach) */}
+        {/* Share Result (Integrated into the background flow) */}
         {result && (
-          <button
-            onClick={handleShare}
-            className={cn(
-              'group flex items-center gap-2 rounded-full px-6 py-3 text-xs font-black tracking-widest uppercase transition-all active:scale-95',
-              'bg-(--card-color) text-(--secondary-color)',
-              'border border-(--border-color)/40 shadow-lg shadow-black/5 hover:border-(--main-color)/30 hover:shadow-xl',
-              shareButtonState === 'copied' &&
-                'border-transparent bg-green-500 text-white shadow-green-500/20',
-              shareButtonState === 'error' &&
-                'border-transparent bg-red-500 text-white shadow-red-500/20',
-            )}
-            aria-label={
-              shareButtonState === 'copied'
-                ? 'Link copied to clipboard'
-                : shareButtonState === 'error'
-                  ? 'Failed to copy link'
-                  : `Share conjugation of ${result.verb.dictionaryForm}`
-            }
-            aria-live='polite'
-          >
-            {shareButtonState === 'copied' ? (
-              <>
-                <Check className='h-4 w-4' aria-hidden='true' />
-                <span>Copied to Clipboard</span>
-              </>
-            ) : (
-              <>
-                <Share2 className='h-4 w-4 transition-transform group-hover:rotate-12' />
-                <span>Share Results</span>
-              </>
-            )}
-          </button>
+          <div className='animate-in fade-in zoom-in mt-10 duration-700'>
+            <button
+              onClick={handleShare}
+              className={cn(
+                'group flex items-center gap-4 rounded-full border border-(--border-color)/30 bg-(--background-color)/50 px-8 py-4 backdrop-blur-xl transition-all hover:scale-105 active:scale-95',
+                shareButtonState === 'copied' &&
+                  'border-transparent bg-green-500 text-white',
+              )}
+            >
+              {shareButtonState === 'copied' ? (
+                <>
+                  <Check className='h-5 w-5' />
+                  <span className='text-sm font-black tracking-widest uppercase'>
+                    Copied
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Share2 className='h-5 w-5 text-(--main-color)' />
+                  <span className='text-sm font-black tracking-widest text-(--main-color) uppercase'>
+                    Sync Result
+                  </span>
+                </>
+              )}
+            </button>
+          </div>
         )}
       </header>
 
-      {/* Main content area */}
-      <div className='grid grid-cols-1 gap-12 lg:grid-cols-[1fr_380px] lg:gap-20'>
-        {/* Left column - Input and Results */}
-        <div className='flex flex-col gap-12 sm:gap-20'>
-          {/* Input section */}
-          <section aria-label='Verb Search'>
+      {/* Unified Canvas Layout */}
+      <div className='relative flex flex-col lg:flex-row lg:items-start lg:gap-16'>
+        {/* Main Interaction Canvas */}
+        <div className='flex flex-1 flex-col gap-24'>
+          {/* Persistent Core Input Field - Elevated, not carded */}
+          <section
+            className='relative z-10 mx-auto w-full max-w-4xl'
+            aria-label='Verb Search'
+          >
+            <div className='absolute -inset-4 rounded-[3rem] bg-gradient-to-b from-(--main-color)/5 to-transparent opacity-50 blur-2xl' />
             <ConjugatorInput
               value={inputText}
               onChange={setInputText}
@@ -202,8 +207,8 @@ export default function ConjugatorPage({ locale = 'en' }: ConjugatorPageProps) {
             />
           </section>
 
-          {/* Results section */}
-          <section aria-label='Conjugation Results'>
+          {/* Result Flow Area */}
+          <section className='min-h-[600px]' aria-label='Conjugation Results'>
             <ConjugationResults
               result={result}
               isLoading={isLoading}
@@ -217,12 +222,15 @@ export default function ConjugatorPage({ locale = 'en' }: ConjugatorPageProps) {
           </section>
         </div>
 
-        {/* Right column - History (desktop) */}
+        {/* Architectural Sidebar - History as a timeline record */}
         <aside
-          className='hidden lg:block'
-          aria-label='Conjugation history sidebar'
+          className='shrink-0 pt-20 lg:sticky lg:top-24 lg:w-[320px] lg:pt-0'
+          aria-label='Conjugation history'
         >
-          <div className='sticky top-8'>
+          <div className='relative'>
+            {/* Background architectural line */}
+            <div className='absolute top-0 -left-8 hidden h-full w-[1px] bg-gradient-to-b from-(--border-color)/50 via-(--border-color)/20 to-transparent lg:block' />
+
             <ConjugationHistory
               entries={history}
               onSelect={restoreFromHistory}
@@ -232,16 +240,6 @@ export default function ConjugatorPage({ locale = 'en' }: ConjugatorPageProps) {
           </div>
         </aside>
       </div>
-
-      {/* History section (mobile) */}
-      <aside className='lg:hidden' aria-label='Conjugation history'>
-        <ConjugationHistory
-          entries={history}
-          onSelect={restoreFromHistory}
-          onDelete={deleteFromHistory}
-          onClearAll={clearHistory}
-        />
-      </aside>
 
       {/* Keyboard shortcuts info (screen reader only) */}
       <div className='sr-only' aria-live='polite'>

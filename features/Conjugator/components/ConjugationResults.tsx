@@ -106,24 +106,17 @@ export default function ConjugationResults({
   // Loading state
   if (isLoading) {
     return (
-      <div
-        className={cn(
-          'flex min-h-[500px] flex-col items-center justify-center gap-10 rounded-[2.5rem] p-12 text-center',
-          'border border-(--border-color)/20 bg-(--card-color)/30 shadow-xl shadow-black/5 backdrop-blur-xl',
-        )}
-      >
-        <div className='relative flex h-32 w-32 items-center justify-center'>
-          <div className='absolute inset-0 animate-ping rounded-full bg-(--main-color)/5' />
-          <div className='absolute inset-4 animate-pulse rounded-full bg-(--main-color)/10' />
-          <Loader2 className='h-12 w-12 animate-spin text-(--main-color) opacity-50' />
+      <div className='animate-in fade-in flex min-h-[500px] flex-col items-center justify-center gap-12 py-20 text-center duration-1000'>
+        <div className='relative flex h-40 w-40 items-center justify-center'>
+          <div className='absolute inset-0 animate-ping rounded-full bg-(--main-color)/5 blur-3xl' />
+          <Loader2 className='h-16 w-16 animate-spin text-(--main-color) opacity-20' />
         </div>
-        <div className='space-y-4'>
-          <h3 className='text-3xl font-black tracking-tight text-(--main-color) sm:text-4xl'>
-            Synthesizing Forms
+        <div className='space-y-6'>
+          <h3 className='text-xs font-black tracking-[1em] text-(--secondary-color) uppercase opacity-40'>
+            Linguistic Synthesis
           </h3>
-          <p className='mx-auto max-w-sm text-lg leading-relaxed font-medium text-(--secondary-color) opacity-50'>
-            We're applying high-precision linguistic algorithms to generate your
-            conjugation matrix.
+          <p className='mx-auto max-w-sm text-3xl font-black tracking-tighter text-(--main-color) sm:text-5xl'>
+            Reconstructing morphological matrix...
           </p>
         </div>
       </div>
@@ -133,24 +126,15 @@ export default function ConjugationResults({
   // No result state
   if (!result) {
     return (
-      <div
-        className={cn(
-          'flex flex-col items-center justify-center rounded-[2.5rem] px-8 py-24 text-center',
-          'border border-(--border-color)/20 bg-(--card-color)/20 shadow-xl shadow-black/5',
-        )}
-      >
-        <div className='relative mb-10 flex h-28 w-28 items-center justify-center rounded-3xl bg-(--secondary-color)/5 shadow-inner'>
-          <div className='absolute inset-0 animate-pulse rounded-3xl bg-(--secondary-color)/5' />
-          <span className='relative z-10 text-6xl opacity-50 grayscale transition-all group-hover:opacity-100 group-hover:grayscale-0'>
-            🏯
-          </span>
+      <div className='animate-in fade-in slide-in-from-bottom-8 flex flex-col items-center justify-center py-40 text-center duration-1000'>
+        <div className='relative mb-16 flex h-32 w-32 items-center justify-center text-8xl opacity-10 blur-[1px] grayscale transition-all group-hover:opacity-100 group-hover:grayscale-0'>
+          🏯
         </div>
-        <h3 className='text-3xl font-black tracking-tight text-(--main-color) sm:text-4xl'>
-          Ready to Deconstruct
+        <h3 className='text-xs font-black tracking-[1em] text-(--secondary-color) uppercase opacity-40'>
+          System Standby
         </h3>
-        <p className='mt-4 max-w-md text-lg leading-relaxed font-medium text-(--secondary-color) opacity-50'>
-          Enter a Japanese verb to see its full conjugation potential analyzed
-          through our high-precision engine.
+        <p className='mt-6 max-w-md text-3xl font-black tracking-tighter text-(--main-color) opacity-80 sm:text-5xl'>
+          Initiate a search to synthesize transformations.
         </p>
       </div>
     );
@@ -158,7 +142,7 @@ export default function ConjugationResults({
 
   return (
     <div
-      className='flex flex-col gap-12 sm:gap-20'
+      className='animate-in fade-in slide-in-from-bottom-12 flex flex-col gap-32 duration-1000'
       role='region'
       aria-label='Conjugation results'
       aria-busy={isLoading}
@@ -173,100 +157,96 @@ export default function ConjugationResults({
         {statusMessage}
       </div>
 
-      {/* Results Header and Actions */}
-      <div className='flex flex-wrap items-end justify-between gap-8 px-2'>
-        <div className='flex flex-col gap-2'>
-          <h2 className='text-4xl font-black tracking-tight text-(--main-color) sm:text-6xl'>
-            Conjugation{' '}
-            <span className='font-serif text-(--secondary-color) italic'>
-              Results
-            </span>
-          </h2>
-          <div className='flex items-center gap-3'>
-            <div className='h-[1px] w-8 bg-(--main-color)/20' />
-            <p className='text-[10px] font-black tracking-[0.3em] text-(--secondary-color) uppercase opacity-50'>
-              Linguistic Analysis: {result.verb.dictionaryForm}
-            </p>
+      {/* Results Header and Actions - Very spacious and architectural */}
+      <div className='flex flex-col gap-12'>
+        <div className='flex flex-wrap items-end justify-between gap-12'>
+          <div className='flex flex-col gap-4'>
+            <div className='flex items-center gap-4 text-xs font-black tracking-[0.5em] text-(--secondary-color) uppercase opacity-40'>
+              <div className='h-[1px] w-12 bg-(--main-color)' />
+              <span>Result Synthesis</span>
+            </div>
+            <h2 className='text-6xl font-black tracking-tighter text-(--main-color) sm:text-8xl lg:text-9xl'>
+              Deep Analysis
+            </h2>
+          </div>
+
+          <div className='flex items-center gap-6'>
+            <button
+              onClick={allExpanded ? onCollapseAll : onExpandAll}
+              className='flex items-center gap-3 text-[10px] font-black tracking-widest text-(--secondary-color) uppercase opacity-50 transition-all hover:text-(--main-color) hover:opacity-100'
+            >
+              {allExpanded ? (
+                <Minimize2 className='h-4 w-4' />
+              ) : (
+                <Expand className='h-4 w-4' />
+              )}
+              <span>{allExpanded ? 'Contract View' : 'Expand Matrix'}</span>
+            </button>
+
+            <ActionButton
+              onClick={handleCopyAll}
+              gradient
+              borderRadius='full'
+              borderBottomThickness={0}
+              className='h-14 !w-auto px-10 text-[10px] font-black tracking-widest uppercase shadow-(--main-color)/20 shadow-2xl transition-all hover:scale-105 active:scale-95'
+            >
+              {copiedAll ? (
+                <>
+                  <Check className='mr-3 h-5 w-5' />
+                  <span>Archive Exported</span>
+                </>
+              ) : (
+                <>
+                  <Copy className='mr-3 h-5 w-5' />
+                  <span>Export All Synths</span>
+                </>
+              )}
+            </ActionButton>
           </div>
         </div>
-        <div className='flex items-center gap-4'>
-          <ActionButton
-            onClick={allExpanded ? onCollapseAll : onExpandAll}
-            colorScheme='secondary'
-            borderRadius='xl'
-            borderBottomThickness={0}
-            className='h-12 !w-auto border border-(--border-color)/50 px-6 text-[10px] font-black tracking-widest uppercase transition-all hover:bg-(--main-color)/5 active:scale-95'
-            aria-label={
-              allExpanded ? 'Collapse all categories' : 'Expand all categories'
-            }
-          >
-            {allExpanded ? (
-              <>
-                <Minimize2 className='mr-2 h-4 w-4' />
-                <span>Collapse All</span>
-              </>
-            ) : (
-              <>
-                <Expand className='mr-2 h-4 w-4' />
-                <span>Expand All</span>
-              </>
-            )}
-          </ActionButton>
 
-          <ActionButton
-            onClick={handleCopyAll}
-            gradient
-            borderRadius='xl'
-            borderBottomThickness={0}
-            className='h-12 !w-auto px-8 text-[10px] font-black tracking-widest uppercase shadow-(--main-color)/10 shadow-lg transition-all hover:scale-[1.02] active:scale-95'
-            aria-label='Copy all conjugation forms'
-          >
-            {copiedAll ? (
-              <>
-                <Check className='mr-2 h-4 w-4' />
-                <span>Copied Matrix</span>
-              </>
-            ) : (
-              <>
-                <Copy className='mr-2 h-4 w-4' />
-                <span>Copy Matrix</span>
-              </>
-            )}
-          </ActionButton>
-        </div>
+        {/* The verb info section - expansive, no-box flow */}
+        <section className='relative'>
+          <div className='pointer-events-none absolute top-1/2 -right-10 -left-10 h-1/2 bg-(--main-color)/2 blur-[120px]' />
+          <VerbInfoCard verb={result.verb} />
+        </section>
       </div>
 
-      <div className='flex flex-col gap-12'>
-        {/* Verb info card */}
-        <VerbInfoCard verb={result.verb} />
+      {/* Conjugation Categories - Vertical Index Approach (No Boxes) */}
+      <div className='flex flex-col gap-24'>
+        {categoriesWithForms.map((category, index) => (
+          <div key={category} className='relative'>
+            {/* Architectural Marker */}
+            <div className='absolute top-0 -left-12 hidden text-[10px] font-black text-(--main-color) opacity-10 lg:block'>
+              {String(index + 1).padStart(2, '0')}
+            </div>
 
-        {/* Category cards grid */}
-        <div
-          className='grid grid-cols-1 gap-10 md:grid-cols-2 lg:gap-12'
-          role='list'
-          aria-label='Conjugation categories'
-        >
-          {categoriesWithForms.map(category => (
             <ConjugationCategory
-              key={category}
               category={category}
               forms={formsByCategory.get(category) || []}
               isExpanded={expandedCategories.includes(category)}
               onToggle={() => onToggleCategory(category)}
               onCopy={onCopyForm}
             />
-          ))}
-        </div>
+
+            {/* Integrated subtle separator */}
+            <div className='mt-16 h-[1px] w-full bg-gradient-to-r from-(--border-color)/50 via-(--border-color)/10 to-transparent' />
+          </div>
+        ))}
       </div>
 
-      {/* Form count summary */}
-      <div className='flex flex-col items-center gap-4 text-center'>
-        <div className='h-[1px] w-24 bg-(--border-color)/50' />
-        <div className='text-[10px] font-black tracking-widest text-(--secondary-color) uppercase opacity-40'>
-          {result.forms.length} total forms synthesized across{' '}
-          {categoriesWithForms.length} linguistic categories
+      {/* Technical Summary Footer */}
+      <footer className='flex flex-col items-center gap-8 py-20 text-center opacity-40'>
+        <div className='h-12 w-[1px] bg-(--main-color)' />
+        <div className='flex flex-col gap-1'>
+          <p className='text-[11px] font-black tracking-[0.3em] uppercase'>
+            Total Transformations: {result.forms.length}
+          </p>
+          <p className='text-[10px] font-bold'>
+            All synths generated on precision linguistic models
+          </p>
         </div>
-      </div>
+      </footer>
     </div>
   );
 }

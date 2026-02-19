@@ -81,42 +81,16 @@ export default function ConjugatorInput({
 
   return (
     <div
-      className={cn(
-        'group relative flex w-full flex-col gap-8 rounded-3xl p-8 transition-all duration-500 sm:p-10',
-        'bg-(--card-color)/50 backdrop-blur-sm',
-        'border border-(--border-color)/30 shadow-2xl shadow-black/5',
-        'hover:border-(--main-color)/20 hover:shadow-black/10',
-      )}
+      className='group relative flex w-full flex-col gap-10 transition-all duration-700'
       role='search'
       aria-label='Japanese verb conjugation input'
     >
-      {/* Search Header */}
-      <div className='flex items-center gap-6'>
-        <div
-          className='flex h-12 w-12 items-center justify-center rounded-xl bg-(--main-color) text-(--background-color) shadow-(--main-color)/20 shadow-lg'
-          aria-hidden='true'
-        >
-          <Search className='h-5 w-5' />
-        </div>
-        <div>
-          <h2
-            className='text-xl font-black tracking-tight text-(--main-color) sm:text-2xl'
-            id='verb-input-label'
-          >
-            Universal Search
-          </h2>
-          <p
-            className='text-sm font-medium text-(--secondary-color) opacity-50'
-            id='verb-input-hint'
-          >
-            Enter a Japanese verb in any form
-          </p>
-        </div>
-      </div>
-
-      {/* Input Field Container */}
-      <div className='relative flex flex-col gap-4'>
+      {/* Input Field Container - The Hero Element */}
+      <div className='relative flex flex-col gap-6'>
         <div className='relative flex items-center'>
+          {/* Subtle architectural background for the input only */}
+          <div className='absolute -inset-1 rounded-[2rem] bg-gradient-to-r from-(--main-color)/20 via-(--main-color)/5 to-(--main-color)/20 opacity-0 blur-xl transition-opacity duration-1000 group-focus-within:opacity-100' />
+
           <input
             ref={inputRef}
             type='text'
@@ -126,13 +100,12 @@ export default function ConjugatorInput({
             disabled={isDisabled}
             placeholder='e.g. 食べる, 行く, する...'
             className={cn(
-              'h-20 w-full rounded-2xl px-8 sm:h-24 sm:px-10',
-              'bg-(--background-color) text-3xl text-(--main-color) placeholder:text-(--secondary-color)/30 sm:text-4xl',
-              'font-japanese tracking-wide',
-              'border border-(--border-color)/20 shadow-inner transition-all duration-300',
-              'focus:border-(--main-color)/40 focus:ring-8 focus:ring-(--main-color)/5 focus:outline-none',
-              error &&
-                'border-red-500/50 focus:border-red-500 focus:ring-red-500/5',
+              'relative h-24 w-full rounded-3xl px-10 sm:h-32 sm:px-14',
+              'bg-(--background-color)/40 text-4xl text-(--main-color) placeholder:text-(--secondary-color)/20 sm:text-6xl',
+              'font-japanese tracking-tighter backdrop-blur-3xl',
+              'border border-(--border-color)/20 shadow-2xl shadow-black/5 transition-all duration-500',
+              'focus:scale-[1.01] focus:border-(--main-color)/40 focus:ring-0 focus:outline-none',
+              error && 'border-red-500/50',
               isDisabled && 'cursor-not-allowed opacity-60',
             )}
             aria-labelledby='verb-input-label'
@@ -147,81 +120,91 @@ export default function ConjugatorInput({
             lang='ja'
           />
 
+          {/* Search Icon (floating inside) */}
+          <div className='absolute left-6 hidden opacity-20 sm:block'>
+            <Search className='h-8 w-8 text-(--main-color)' />
+          </div>
+
           {/* Clear button */}
           {value.length > 0 && !isDisabled && (
             <button
               onClick={handleClear}
               className={cn(
-                'absolute right-6 flex h-10 w-10 items-center justify-center rounded-full transition-all sm:right-8',
-                'bg-(--secondary-color)/10 text-(--secondary-color) hover:bg-(--secondary-color)/20 hover:text-(--main-color)',
+                'absolute right-8 flex h-12 w-12 items-center justify-center rounded-full transition-all sm:right-10',
+                'bg-(--secondary-color)/5 text-(--secondary-color) hover:bg-(--secondary-color)/10 hover:text-(--main-color)',
               )}
               aria-label='Clear input field'
             >
-              <X className='h-5 w-5' aria-hidden='true' />
+              <X className='h-6 w-6' aria-hidden='true' />
             </button>
           )}
         </div>
 
-        {/* Error Message Section */}
+        {/* Floating Hint Overlay */}
+        <p
+          className='absolute -top-8 left-4 text-[10px] font-black tracking-[0.4em] text-(--secondary-color) uppercase opacity-30'
+          id='verb-input-hint'
+        >
+          Morphology Engine Input
+        </p>
+
+        {/* Error Message Section - Floating below input */}
         {error && (
           <div
             id='input-error'
             className={cn(
-              'flex items-center gap-3 rounded-xl p-4',
-              'border border-red-500/20 bg-red-500/5',
-              'animate-in fade-in slide-in-from-top-2 text-sm font-bold text-red-500',
+              'absolute -bottom-16 left-0 flex items-center gap-3 rounded-2xl px-6 py-3',
+              'border border-red-500/20 bg-red-500/5 backdrop-blur-md',
+              'animate-in fade-in slide-in-from-top-4 text-xs font-black tracking-widest text-red-500 uppercase',
             )}
             role='alert'
             aria-live='polite'
           >
-            <div className='h-1.5 w-1.5 scale-125 rounded-full bg-red-500' />
+            <div className='h-1.5 w-1.5 animate-pulse rounded-full bg-red-500' />
             {getErrorMessage(error)}
           </div>
         )}
       </div>
 
-      {/* Action Section */}
-      <div className='flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between'>
+      {/* Primary Catalyst Button & Hints */}
+      <div className='mt-4 flex flex-col items-center gap-8 sm:flex-row sm:justify-between'>
         <ActionButton
           onClick={onConjugate}
           disabled={!canConjugate}
           gradient
-          borderRadius='xl'
+          borderRadius='full'
           borderBottomThickness={0}
           className={cn(
-            'h-16 w-full text-sm font-black tracking-[0.2em] uppercase sm:h-18 sm:w-auto sm:px-12',
-            'shadow-(--main-color)/10 shadow-xl transition-all hover:scale-[1.02] hover:shadow-(--main-color)/20 active:scale-95',
-            'disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none disabled:hover:scale-100',
+            'h-16 w-full text-xs font-black tracking-[0.3em] uppercase sm:h-20 sm:w-auto sm:px-16',
+            'shadow-(--main-color)/10 shadow-2xl transition-all hover:scale-110 active:scale-95',
+            'disabled:opacity-20 disabled:grayscale disabled:hover:scale-100',
           )}
-          aria-label={
-            isLoading ? 'Conjugating verb, please wait' : 'Conjugate verb'
-          }
+          aria-label={isLoading ? 'Conjugating...' : 'Initiate Conjugation'}
           aria-busy={isLoading}
         >
           {isLoading ? (
-            <div className='flex items-center gap-3'>
-              <Loader2 className='h-5 w-5 animate-spin' />
-              <span>Conjugating</span>
+            <div className='flex items-center gap-4'>
+              <Loader2 className='h-6 w-6 animate-spin' />
+              <span>Synthesizing</span>
             </div>
           ) : (
-            'Conjugate Now'
+            'Conjugate'
           )}
         </ActionButton>
 
-        {/* Keyboard hints */}
-        <div className='flex items-center gap-4 text-[10px] font-black tracking-widest text-(--secondary-color) uppercase opacity-40'>
-          <div className='flex items-center gap-2'>
-            <kbd className='rounded bg-(--secondary-color)/10 px-1.5 py-0.5 font-mono'>
-              ENTER
-            </kbd>
-            <span>Conjugate</span>
+        {/* High-end minimalist keyboard hints */}
+        <div className='flex items-center gap-6 opacity-30'>
+          <div className='flex items-center gap-3'>
+            <div className='h-1 w-1 rounded-full bg-(--secondary-color)' />
+            <span className='text-[9px] font-black tracking-widest text-(--secondary-color) uppercase'>
+              Enter to synth
+            </span>
           </div>
-          <div className='h-4 w-[1px] bg-(--border-color)/50' />
-          <div className='flex items-center gap-2'>
-            <kbd className='rounded bg-(--secondary-color)/10 px-1.5 py-0.5 font-mono'>
-              ESC
-            </kbd>
-            <span>Clear</span>
+          <div className='flex items-center gap-3'>
+            <div className='h-1 w-1 rounded-full bg-(--secondary-color)' />
+            <span className='text-[9px] font-black tracking-widest text-(--secondary-color) uppercase'>
+              Esc to purge
+            </span>
           </div>
         </div>
       </div>

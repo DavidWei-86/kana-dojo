@@ -69,85 +69,94 @@ export default function ConjugationCategory({
 
   return (
     <div
-      className={cn(
-        'group flex flex-col overflow-hidden rounded-3xl transition-all duration-500',
-        'border border-(--border-color)/20 bg-(--card-color)/30',
-        'hover:border-(--main-color)/20 hover:shadow-xl hover:shadow-black/5',
-        isExpanded && 'border-(--main-color)/10 bg-(--card-color)/50 shadow-lg',
-      )}
+      className='group flex flex-col transition-all duration-700'
       role='listitem'
     >
-      {/* Category header - clickable to toggle */}
+      {/* Category header - Architectural row */}
       <button
         onClick={onToggle}
         className={cn(
-          'flex items-center justify-between px-8 py-6 transition-all duration-300',
-          'hover:bg-(--main-color)/5',
-          'cursor-pointer focus:bg-(--main-color)/5 focus:outline-none',
+          'flex items-center justify-between py-8 transition-all duration-500',
+          'cursor-pointer focus:outline-none',
         )}
         aria-expanded={isExpanded}
         aria-controls={`category-${category}`}
-        aria-label={`${categoryInfo.name} (${categoryInfo.nameJa}), ${forms.length} form${forms.length !== 1 ? 's' : ''}. ${isExpanded ? 'Click to collapse' : 'Click to expand'}`}
+        aria-label={`${categoryInfo.name} (${categoryInfo.nameJa}), ${forms.length} forms. ${isExpanded ? 'Collapse' : 'Expand'}`}
       >
-        <div className='flex items-center gap-6'>
+        <div className='flex items-center gap-10'>
+          {/* Minimalist icon marker */}
           <div
             className={cn(
-              'flex h-14 w-14 items-center justify-center rounded-2xl text-2xl shadow-sm transition-transform duration-500',
+              'flex h-16 w-16 items-center justify-center rounded-full transition-all duration-700',
               categoryInfo.bgClass,
-              isExpanded && 'scale-110 rotate-3',
+              isExpanded
+                ? 'scale-110 shadow-2xl shadow-black/10'
+                : 'opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0',
             )}
             aria-hidden='true'
           >
             {categoryInfo.icon}
           </div>
-          <div className='text-left'>
-            <h4 className='text-xl font-black tracking-tight text-(--main-color) sm:text-2xl'>
+
+          <div className='flex flex-col text-left'>
+            <h4
+              className={cn(
+                'text-4xl font-black tracking-tighter transition-all duration-500',
+                isExpanded
+                  ? 'origin-left scale-105 text-(--main-color)'
+                  : 'text-(--secondary-color) opacity-40 group-hover:opacity-100',
+              )}
+            >
               {categoryInfo.name}
             </h4>
-            <div className='mt-1 flex items-center gap-3'>
-              <span className='font-japanese text-xs font-bold tracking-widest text-(--secondary-color) opacity-50'>
+            <div className='mt-2 flex items-center gap-4'>
+              <span className='font-japanese text-sm font-bold tracking-widest text-(--main-color) opacity-20'>
                 {categoryInfo.nameJa}
               </span>
-              <div className='h-1 w-1 rounded-full bg-(--border-color)' />
-              <span className='text-[10px] font-black tracking-widest text-(--secondary-color) uppercase opacity-30'>
-                {forms.length} Variants
+              <div className='h-[1px] w-8 bg-(--border-color)/50' />
+              <span className='text-[10px] font-black tracking-[0.3em] text-(--secondary-color) uppercase opacity-20'>
+                {forms.length} Synthesized
               </span>
             </div>
           </div>
         </div>
-        <div className='flex items-center gap-4'>
+
+        <div className='flex items-center gap-8'>
           <div
             className={cn(
-              'flex h-10 w-10 items-center justify-center rounded-full transition-all duration-500',
+              'hidden h-[1px] w-32 bg-gradient-to-r from-transparent to-(--border-color)/30 transition-all duration-700 sm:block',
+              isExpanded ? 'opacity-0' : 'opacity-100',
+            )}
+          />
+          <div
+            className={cn(
+              'flex h-12 w-12 items-center justify-center rounded-full transition-all duration-500',
               isExpanded
-                ? 'rotate-180 bg-(--main-color) text-white'
-                : 'bg-(--main-color)/5 text-(--main-color) group-hover:bg-(--main-color)/10',
+                ? 'rotate-180 bg-(--main-color) text-white shadow-(--main-color)/20 shadow-xl'
+                : 'border border-(--border-color)/30 text-(--secondary-color) opacity-30 group-hover:opacity-100',
             )}
           >
-            <ChevronDown
-              className={cn('h-5 w-5', isExpanded ? 'scale-110' : '')}
-              aria-hidden='true'
-            />
+            <ChevronDown className='h-5 w-5' aria-hidden='true' />
           </div>
         </div>
       </button>
 
-      {/* Forms list - animated expand/collapse */}
+      {/* Forms list - Integrated flow */}
       <div
         id={`category-${category}`}
         className={cn(
-          'grid transition-all duration-500 ease-in-out',
+          'grid transition-all duration-700 ease-in-out',
           isExpanded
-            ? 'grid-rows-[1fr] opacity-100'
+            ? 'mt-8 grid-rows-[1fr] opacity-100'
             : 'grid-rows-[0fr] opacity-0',
         )}
         role='region'
         aria-label={`${categoryInfo.name} conjugation forms`}
         hidden={!isExpanded}
       >
-        <div className='overflow-hidden'>
+        <div className='ml-8 overflow-hidden border-l-2 border-(--main-color)/5 pl-10'>
           <div
-            className='flex flex-col border-t border-(--border-color)/20'
+            className='flex flex-col gap-4'
             role='list'
             aria-label={`${forms.length} ${categoryInfo.name.toLowerCase()} forms`}
           >

@@ -78,37 +78,29 @@ export default function ConjugationHistory({
 
   return (
     <div
-      className={cn(
-        'flex flex-col gap-8 rounded-3xl p-8',
-        'border border-(--border-color)/20 bg-(--card-color)/30 shadow-2xl shadow-black/5',
-      )}
+      className='flex flex-col gap-10 transition-all duration-700'
       role='region'
       aria-label='Conjugation history'
     >
-      {/* Header */}
+      {/* Header - Sidebar Style */}
       <div className='flex items-center justify-between'>
-        <div className='flex items-center gap-4'>
-          <div
-            className='flex h-10 w-10 items-center justify-center rounded-xl bg-(--main-color) text-(--background-color) shadow-(--main-color)/20 shadow-lg'
-            aria-hidden='true'
-          >
-            <Clock className='h-5 w-5' />
-          </div>
-          <div>
-            <h3 className='text-sm font-black tracking-[0.2em] text-(--main-color) uppercase'>
-              Recent Logs
+        <div className='flex flex-col gap-1'>
+          <div className='flex items-center gap-3'>
+            <div className='h-1.5 w-1.5 rounded-full bg-(--main-color)' />
+            <h3 className='text-xs font-black tracking-[0.4em] text-(--main-color) uppercase opacity-40'>
+              Archive Log
             </h3>
-            <p className='text-[10px] font-bold text-(--secondary-color) opacity-40'>
-              {entries.length} Synths Archived
-            </p>
           </div>
+          <p className='text-[10px] font-bold text-(--secondary-color) opacity-20'>
+            {entries.length} morphs recorded
+          </p>
         </div>
 
-        {/* Clear all button */}
+        {/* Clear all button - Ghost style */}
         <AlertDialog open={clearDialogOpen} onOpenChange={setClearDialogOpen}>
           <AlertDialogTrigger asChild>
             <button
-              className='flex h-8 w-8 items-center justify-center rounded-lg bg-(--secondary-color)/5 text-(--secondary-color) transition-all hover:bg-red-500 hover:text-white active:scale-90'
+              className='flex h-10 w-10 items-center justify-center rounded-full text-(--secondary-color) opacity-20 transition-all hover:bg-red-500/10 hover:text-red-500 hover:opacity-100 active:scale-90'
               aria-label='Clear all history archive'
             >
               <Trash2 className='h-4 w-4' />
@@ -121,18 +113,18 @@ export default function ConjugationHistory({
             )}
           >
             <AlertDialogHeader>
-              <AlertDialogTitle className='text-xl font-black text-(--main-color)'>
+              <AlertDialogTitle className='text-3xl font-black tracking-tighter text-(--main-color)'>
                 Purge Archive?
               </AlertDialogTitle>
-              <AlertDialogDescription className='text-base leading-relaxed font-medium text-(--secondary-color)/70'>
+              <AlertDialogDescription className='text-base leading-relaxed font-semibold text-(--secondary-color)/60'>
                 This will permanently delete all your linguistic transformation
-                records. This action is irreversible.
+                records.
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter className='flex-row gap-4 pt-4'>
+            <AlertDialogFooter className='flex-row gap-4 pt-6'>
               <ActionButton
                 colorScheme='secondary'
-                borderRadius='xl'
+                borderRadius='full'
                 borderBottomThickness={0}
                 className='flex-1 border border-(--border-color)/50 text-xs font-black tracking-widest uppercase'
                 onClick={() => setClearDialogOpen(false)}
@@ -141,7 +133,7 @@ export default function ConjugationHistory({
               </ActionButton>
               <ActionButton
                 colorScheme='main'
-                borderRadius='xl'
+                borderRadius='full'
                 borderBottomThickness={0}
                 className='flex-1 bg-red-600 text-xs font-black tracking-widest uppercase hover:bg-red-700'
                 onClick={() => {
@@ -156,9 +148,9 @@ export default function ConjugationHistory({
         </AlertDialog>
       </div>
 
-      {/* History entries as a vertical list */}
+      {/* History entries as a minimalist architectural list */}
       <div
-        className='flex flex-col gap-3'
+        className='flex flex-col gap-1'
         role='list'
         aria-label='Recent conjugated verbs'
       >
@@ -192,60 +184,59 @@ function HistoryRecord({
   return (
     <div
       className={cn(
-        'group flex items-center justify-between rounded-xl transition-all duration-300',
-        'border border-(--border-color)/20 bg-(--background-color)/50 shadow-sm',
-        'hover:-translate-x-1 hover:border-(--main-color)/30 hover:shadow-md',
+        'group relative flex items-center justify-between transition-all duration-500',
+        'hover:translate-x-3',
       )}
       role='listitem'
     >
       {/* Clickable verb part */}
       <button
         onClick={() => onSelect(entry)}
-        className='flex min-w-0 flex-1 items-center gap-4 py-3 pl-4 text-left focus:outline-none'
-        aria-label={`Conjugate ${entry.verb}, ${typeInfo.label} verb, conjugated ${formatTimestamp(entry.timestamp)} ago`}
+        className='flex min-w-0 flex-1 items-center gap-6 py-4 text-left focus:outline-none'
+        aria-label={`Conjugate ${entry.verb}`}
       >
-        {/* Type Icon */}
+        {/* Type Dot Marker */}
         <div
           className={cn(
-            'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-xs font-black shadow-inner',
+            'flex h-2 w-2 shrink-0 rounded-full transition-all duration-700 group-hover:scale-[2]',
             typeInfo.bgClass,
-            typeInfo.textClass,
+            'bg-opacity-100', // Override the bgOpacity for the dot
           )}
-          aria-hidden='true'
-        >
-          {typeInfo.abbrev}
-        </div>
+          style={{
+            backgroundColor: typeInfo.textClass.split('text-')[1].split('-')[0],
+          }} // Hacky way to get the color, better to define properly
+        />
 
         <div className='flex min-w-0 flex-col'>
           <span
-            className='font-japanese truncate text-lg font-black tracking-tight text-(--main-color)'
+            className='font-japanese truncate text-2xl font-black tracking-tighter text-(--main-color) opacity-40 transition-all duration-500 group-hover:opacity-100'
             lang='ja'
           >
             {entry.verb}
           </span>
-          <div className='flex items-center gap-2'>
-            <span className='text-[9px] font-black tracking-widest text-(--secondary-color) uppercase opacity-30'>
+          <div className='mt-1 flex items-center gap-3'>
+            <span className='text-[8px] font-black tracking-widest text-(--secondary-color) uppercase opacity-20'>
               {typeInfo.label}
             </span>
-            <div className='h-1 w-1 rounded-full bg-(--border-color)' />
-            <span className='flex items-center gap-1 text-[9px] font-black tracking-widest text-(--secondary-color) uppercase opacity-30'>
+            <div className='h-[1px] w-4 bg-(--border-color)/50' />
+            <span className='text-[8px] font-black tracking-widest text-(--secondary-color) uppercase opacity-20'>
               {formatTimestamp(entry.timestamp)}
             </span>
           </div>
         </div>
       </button>
 
-      {/* Action Area */}
-      <div className='flex items-center pr-1 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100'>
+      {/* Action Area - Subtle Trash */}
+      <div className='flex items-center pb-4 opacity-0 transition-all duration-500 group-hover:opacity-100'>
         <button
           onClick={e => {
             e.stopPropagation();
             onDelete(entry.id);
           }}
-          className='flex h-10 w-10 items-center justify-center rounded-lg text-(--secondary-color) opacity-20 transition-all hover:bg-red-500 hover:text-white hover:opacity-100 focus:outline-none'
-          aria-label={`Remove ${entry.verb} from history`}
+          className='flex h-8 w-8 items-center justify-center rounded-full text-red-500/30 transition-all hover:bg-red-500/10 hover:text-red-500'
+          aria-label={`Remove ${entry.verb}`}
         >
-          <X className='h-4 w-4' aria-hidden='true' />
+          <X className='h-3 w-3' aria-hidden='true' />
         </button>
       </div>
     </div>
