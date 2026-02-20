@@ -729,7 +729,7 @@ const WelcomeModal = () => {
               step === 'welcome' ? 'overflow-y-auto' : 'overflow-hidden',
             )}
           >
-            {renderStepContent()}
+            <div key={step}>{renderStepContent()}</div>
           </div>
 
           {/* Actions */}
