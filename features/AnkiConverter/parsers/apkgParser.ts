@@ -14,6 +14,7 @@ import JSZip from 'jszip';
 import type { ParsedAnkiData } from '../types';
 import { ConversionError, ErrorCode } from '../types';
 import { parseSQLite } from './sqliteParser';
+import { getUncompressedSize } from './zipUtils';
 
 /**
  * Database file names to look for in APKG archives
@@ -79,8 +80,7 @@ export async function extractDatabaseFromAPKG(
     const file = zip.files[filename];
     if (!file.dir) {
       // Use _data.uncompressedSize if available, otherwise estimate
-      const uncompressedSize =
-        (file as any)._data?.uncompressedSize || compressedSize;
+      const uncompressedSize = getUncompressedSize(file, compressedSize);
       totalUncompressedSize += uncompressedSize;
     }
   }
