@@ -57,7 +57,7 @@ export default async function VocabularyPage({
         name='Japanese Vocabulary Quiz and JLPT Word Practice'
         description='Build your Japanese vocabulary with thousands of words organized by JLPT levels N5 through N1. Practice readings, meanings, and usage with interactive drills and quick set selection.'
         url={`https://kanadojo.com/${locale}/vocabulary`}
-        learningResourceType='Quiz, Interactive, Game'
+        learningResourceType={['Quiz', 'Interactive', 'Game']}
         educationalLevel={['Beginner', 'Intermediate', 'Advanced']}
         teaches='Japanese vocabulary, word readings, meanings, and usage'
         assesses='Vocabulary recognition, recall speed, and JLPT-level word knowledge'

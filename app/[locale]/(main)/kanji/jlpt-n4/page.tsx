@@ -53,7 +53,7 @@ export default async function KanjiJlptN4Page({
         name='JLPT N4 Kanji Practice'
         description='Targeted JLPT N4 kanji practice with selectable levels, quick selection tools, and kanji set dictionaries for exam-focused study.'
         url={`https://kanadojo.com/${locale}/kanji/jlpt-n4`}
-        learningResourceType='Quiz, Interactive, Game'
+        learningResourceType={['Quiz', 'Interactive', 'Game']}
         educationalLevel={['Beginner to Intermediate']}
         teaches='JLPT N4 kanji readings, meanings, and recognition'
         assesses='JLPT N4 kanji recall speed and accuracy'

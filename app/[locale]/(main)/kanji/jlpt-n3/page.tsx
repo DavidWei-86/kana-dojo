@@ -53,7 +53,7 @@ export default async function KanjiJlptN3Page({
         name='JLPT N3 Kanji Practice'
         description='Targeted JLPT N3 kanji practice with selectable levels, quick selection tools, and kanji set dictionaries for exam-focused study.'
         url={`https://kanadojo.com/${locale}/kanji/jlpt-n3`}
-        learningResourceType='Quiz, Interactive, Game'
+        learningResourceType={['Quiz', 'Interactive', 'Game']}
         educationalLevel={['Intermediate']}
         teaches='JLPT N3 kanji readings, meanings, and recognition'
         assesses='JLPT N3 kanji recall speed and accuracy'

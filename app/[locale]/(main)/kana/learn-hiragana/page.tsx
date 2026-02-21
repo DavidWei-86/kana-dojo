@@ -56,7 +56,7 @@ export default async function LearnHiraganaPage({
         name='Hiragana Practice Playground'
         description='Interactive Hiragana learning hub with selectable character groups, drills, and training modes. Designed for fast recognition, pronunciation, and reading confidence for absolute beginners.'
         url={`https://kanadojo.com/${locale}/kana/learn-hiragana`}
-        learningResourceType='Interactive, Quiz, Game'
+        learningResourceType={['Interactive', 'Quiz', 'Game']}
         educationalLevel={['Beginner', 'Intermediate']}
         teaches='Japanese Hiragana chart, reading, recognition, and pronunciation'
         assesses='Hiragana recognition speed, accuracy, and recall'

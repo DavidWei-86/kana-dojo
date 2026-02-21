@@ -15,7 +15,8 @@ export interface LearningResourceSchemaProps {
     | 'LessonPlan'
     | 'Quiz'
     | 'Simulation'
-    | 'Tutorial';
+    | 'Tutorial'
+    | Array<'Activity' | 'Assessment' | 'Course' | 'Game' | 'Interactive' | 'Lesson' | 'LessonPlan' | 'Quiz' | 'Simulation' | 'Tutorial'>;
   /** Educational level (e.g., "Beginner", "Intermediate", "Advanced") */
   educationalLevel?: string | string[];
   /** What the resource teaches */

@@ -51,7 +51,7 @@ export default async function KanjiPage({
         name='Interactive Kanji Practice and JLPT Quiz'
         description='Master over 2,000 Japanese Kanji characters by JLPT levels N5 through N1. Practice readings, meanings, and recognition with interactive quizzes and adaptive repetition.'
         url={`https://kanadojo.com/${locale}/kanji`}
-        learningResourceType='Quiz, Interactive, Game'
+        learningResourceType={['Quiz', 'Interactive', 'Game']}
         educationalLevel={['Beginner', 'Intermediate', 'Advanced']}
         teaches='Japanese Kanji Characters, Readings, and Meanings'
         assesses='Kanji recognition, onyomi and kunyomi recall, and meaning comprehension'

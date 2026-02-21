@@ -51,7 +51,7 @@ export default async function KanaPage({
         name='Interactive Kana Practice Games and Quizzes'
         description='Practice Hiragana and Katakana with interactive quizzes, flashcards, recognition drills, and speed games. Build kana reading accuracy for beginner Japanese study and JLPT preparation.'
         url={`https://kanadojo.com/${locale}/kana`}
-        learningResourceType='Game, Quiz, Interactive'
+        learningResourceType={['Game', 'Quiz', 'Interactive']}
         educationalLevel={['Beginner', 'Intermediate']}
         teaches='Japanese Hiragana and Katakana reading, recognition, and pronunciation'
         assesses='Kana recognition accuracy, recall speed, and reading fluency'

@@ -53,7 +53,7 @@ export default async function VocabularyJlptN3Page({
         name='JLPT N3 Vocabulary Practice'
         description='Targeted JLPT N3 vocabulary drills with selectable sets, quick selection controls, and dictionary links for exam-focused Japanese study.'
         url={`https://kanadojo.com/${locale}/vocabulary/jlpt-n3`}
-        learningResourceType='Quiz, Interactive, Game'
+        learningResourceType={['Quiz', 'Interactive', 'Game']}
         educationalLevel={['Intermediate']}
         teaches='JLPT N3 Japanese vocabulary, meanings, and usage'
         assesses='JLPT N3 word recognition and recall speed'

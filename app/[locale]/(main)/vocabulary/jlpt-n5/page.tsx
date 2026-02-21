@@ -53,7 +53,7 @@ export default async function VocabularyJlptN5Page({
         name='JLPT N5 Vocabulary Practice'
         description='Targeted JLPT N5 vocabulary drills with selectable sets, quick selection controls, and dictionary links for exam-focused Japanese study.'
         url={`https://kanadojo.com/${locale}/vocabulary/jlpt-n5`}
-        learningResourceType='Quiz, Interactive, Game'
+        learningResourceType={['Quiz', 'Interactive', 'Game']}
         educationalLevel={['Beginner']}
         teaches='JLPT N5 Japanese vocabulary, meanings, and usage'
         assesses='JLPT N5 word recognition and recall speed'

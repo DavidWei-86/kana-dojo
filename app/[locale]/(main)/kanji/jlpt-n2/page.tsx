@@ -53,7 +53,7 @@ export default async function KanjiJlptN2Page({
         name='JLPT N2 Kanji Practice'
         description='Targeted JLPT N2 kanji practice with selectable levels, quick selection tools, and kanji set dictionaries for exam-focused study.'
         url={`https://kanadojo.com/${locale}/kanji/jlpt-n2`}
-        learningResourceType='Quiz, Interactive, Game'
+        learningResourceType={['Quiz', 'Interactive', 'Game']}
         educationalLevel={['Upper Intermediate']}
         teaches='JLPT N2 kanji readings, meanings, and recognition'
         assesses='JLPT N2 kanji recall speed and accuracy'

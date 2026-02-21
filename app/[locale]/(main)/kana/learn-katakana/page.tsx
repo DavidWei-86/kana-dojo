@@ -56,7 +56,7 @@ export default async function LearnKatakanaPage({
         name='Katakana Practice Playground'
         description='Interactive Katakana learning hub with selectable character groups, drills, and training modes. Built for recognizing loanword katakana, pronunciation, and reading fluency.'
         url={`https://kanadojo.com/${locale}/kana/learn-katakana`}
-        learningResourceType='Interactive, Quiz, Game'
+        learningResourceType={['Interactive', 'Quiz', 'Game']}
         educationalLevel={['Beginner', 'Intermediate']}
         teaches='Japanese Katakana chart, reading, recognition, and pronunciation'
         assesses='Katakana recognition speed, accuracy, and recall'
