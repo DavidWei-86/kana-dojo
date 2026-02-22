@@ -273,17 +273,24 @@
     "character": "Link"
   },
   {
-  "japanese": "??????????",
-  "romaji": "Unmei o kaete miseru.",
-  "english": "I'll change fate.",
-  "game": "Final Fantasy X",
-  "character": "Auron"
-  }
+    "japanese": "??????????",
+    "romaji": "Unmei o kaete miseru.",
+    "english": "I'll change fate.",
+    "game": "Final Fantasy X",
+    "character": "Auron"
+  },
   {
-  "japanese": "??????????",
-  "romaji": "Unmei o kaete miseru.",
-  "english": "I'll change fate.",
-  "game": "Final Fantasy X",
-  "character": "Auron"
-},
+    "japanese": "??????????",
+    "romaji": "Unmei o kaete miseru.",
+    "english": "I'll change fate.",
+    "game": "Final Fantasy X",
+    "character": "Auron"
+  },
+  {
+    "japanese": "????",
+    "romaji": "Shoubu da!",
+    "english": "Let's settle this!",
+    "game": "Kingdom Hearts",
+    "character": "Sora"
+  }
 ]
