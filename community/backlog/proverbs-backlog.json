@@ -797,7 +797,7 @@
     "romaji": "Hito no furi mite waga furi naose",
     "english": "Watch others and correct yourself",
     "meaning": "Learn from others' behavior",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -824,7 +824,7 @@
     "romaji": "Tenseki koke musazu",
     "english": "A rolling stone gathers no moss",
     "meaning": "Constant change prevents stagnation",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -833,7 +833,7 @@
     "romaji": "Kuchi wa wazawai no moto",
     "english": "The mouth is the source of disaster",
     "meaning": "Careless words cause trouble",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -842,7 +842,7 @@
     "romaji": "Ishi no ue ni mo san nen",
     "english": "Three years on a stone",
     "meaning": "Perseverance brings success",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -851,7 +851,7 @@
     "romaji": "Makeru ga kachi",
     "english": "Sometimes losing is winning",
     "meaning": "Conceding can be the best outcome",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -860,7 +860,7 @@
     "romaji": "I no naka no kawazu taikai wo shirazu",
     "english": "A frog in a well does not know the great sea",
     "meaning": "Limited experience limits perspective",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -887,7 +887,7 @@
     "romaji": "Deru kui wa utareru",
     "english": "The nail that sticks out gets hammered down",
     "meaning": "Standing out invites criticism",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -896,7 +896,7 @@
     "romaji": "Hana yori dango",
     "english": "Dumplings over flowers",
     "meaning": "Practicality over appearance",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -905,7 +905,7 @@
     "romaji": "Hayaoki wa sanmon no toku",
     "english": "Early rising is worth three coins",
     "meaning": "Getting up early brings benefits",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -914,7 +914,7 @@
     "romaji": "Nido aru koto wa sando aru",
     "english": "What happens twice will happen a third time",
     "meaning": "Patterns tend to repeat",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -932,7 +932,7 @@
     "romaji": "Issun saki wa yami",
     "english": "An inch ahead is darkness",
     "meaning": "The future is uncertain",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -941,7 +941,7 @@
     "romaji": "Seite wa koto wo shisonjiru",
     "english": "Haste will spoil things",
     "meaning": "Rushing leads to mistakes",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -959,7 +959,7 @@
     "romaji": "Tsuki to suppon",
     "english": "The moon and a turtle",
     "meaning": "Vastly different; not comparable",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -968,7 +968,7 @@
     "romaji": "Ishibashi wo tataite wataru",
     "english": "Tap a stone bridge before crossing",
     "meaning": "Be very cautious",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -977,7 +977,7 @@
     "romaji": "Doku wo kurawaba sara made",
     "english": "If you eat poison, eat the plate too",
     "meaning": "If you must do it, go all the way",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -987,7 +987,7 @@
     "english": "Fate is strange yet delightful",
     "meaning": "Unexpected connections can be good",
     "issued": false,
-    "completed": false
+    "completed": true
   },
   {
     "id": 111,
@@ -995,7 +995,7 @@
     "romaji": "Toudai moto kurashi",
     "english": "It's darkest under the lighthouse",
     "meaning": "The obvious is often overlooked",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -1004,7 +1004,7 @@
     "romaji": "Senri no michi mo ippo kara",
     "english": "A journey of a thousand miles begins with one step",
     "meaning": "Start small to reach big goals",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -1013,7 +1013,7 @@
     "romaji": "Oni ni kanabou",
     "english": "An iron club to an ogre",
     "meaning": "Adding strength to the strong",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -1022,7 +1022,7 @@
     "romaji": "Neko ni koban",
     "english": "Gold coins to a cat",
     "meaning": "Gifts wasted on those who don't appreciate them",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -1049,7 +1049,7 @@
     "romaji": "Yakeishi ni mizu",
     "english": "Water on a hot stone",
     "meaning": "A futile effort",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -1058,7 +1058,7 @@
     "romaji": "Fukusui bon ni kaerazu",
     "english": "Spilled water will not return to the tray",
     "meaning": "What is done cannot be undone",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -1067,7 +1067,7 @@
     "romaji": "Ni to wo ou mono wa itto wo mo ezu",
     "english": "One who chases two rabbits catches neither",
     "meaning": "Focus on one thing at a time",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -1076,7 +1076,7 @@
     "romaji": "Warau kado ni wa fuku kitaru",
     "english": "Fortune comes to a laughing gate",
     "meaning": "Happiness brings good fortune",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -1085,7 +1085,7 @@
     "romaji": "Nanakorobi yaoki",
     "english": "Fall seven times, get up eight",
     "meaning": "Never give up",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -1094,7 +1094,7 @@
     "romaji": "Ryouyaku wa kuchi ni nigashi",
     "english": "Good medicine tastes bitter",
     "meaning": "Helpful advice can be harsh",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
@@ -1103,7 +1103,7 @@
     "romaji": "Koukai saki ni tatazu",
     "english": "Regret does not stand before",
     "meaning": "It's too late for regrets",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
