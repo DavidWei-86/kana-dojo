@@ -693,7 +693,7 @@
     "id": 116,
     "fact": "Japan has themed trains where the entire interior is decorated for specific anime, seasonal events, or tourist destinations.",
     "issued": false,
-    "completed": false
+    "completed": true
   },
   {
     "id": 117,
@@ -729,7 +729,7 @@
     "id": 122,
     "fact": "Japan has 'anti-lonely death' services that check on elderly living alone and arrange their affairs if they pass away.",
     "issued": false,
-    "completed": false
+    "completed": true
   },
   {
     "id": 123,
@@ -741,12 +741,12 @@
     "id": 124,
     "fact": "Japan has 'Peko-chan' - a cartoon mascot for Fujiya confectionery since 1950, whose tongue-sticking pose has become an iconic symbol recognized by nearly all Japanese people.",
     "issued": false,
-    "completed": false
+    "completed": true
   },
   {
     "id": 125,
     "fact": "The word 'yoroshiku' (よろしく) has no direct translation - it's used for introductions, requests, and meaning 'please treat me well'.",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
