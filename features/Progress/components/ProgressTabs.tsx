@@ -42,22 +42,22 @@ const ProgressTabs = () => {
       <div className='flex justify-center px-2'>
         <div
           className={cn(
-            'rounded-(--progress-tabs-outer-radius) border-4 border-(--border-color) p-(--progress-tabs-halo-gap)',
+            'rounded-(--progress-tabs-outer-radius) border-4 border-(--border-color)',
           )}
           style={
             {
               '--progress-tabs-halo-gap': `${PROGRESS_TABS_HALO_GAP}px`,
-              '--progress-tabs-outer-radius':
-                'calc(var(--radius-2xl) + var(--progress-tabs-halo-gap))',
-              '--progress-tabs-shared-radius':
-                'calc(var(--progress-tabs-outer-radius) - var(--progress-tabs-halo-gap))',
+              '--progress-tabs-outer-radius': 'var(--radius-4xl)',
+              '--progress-tabs-shared-radius': 'var(--radius-3xl)',
+              '--progress-tabs-inner-radius':
+                'calc(var(--progress-tabs-shared-radius) - var(--progress-tabs-halo-gap))',
             } as CSSProperties
           }
         >
           <div
             className={cn(
               'inline-flex flex-wrap justify-center gap-0 overflow-hidden rounded-(--progress-tabs-shared-radius)',
-              'bg-(--card-color) p-0',
+              'bg-(--card-color) p-(--progress-tabs-halo-gap)',
             )}
           >
             {viewOptions.map(option => {
@@ -68,7 +68,7 @@ const ProgressTabs = () => {
                   {isSelected && (
                     <motion.div
                       layoutId='activeProgressTab'
-                      className='absolute inset-0 rounded-(--progress-tabs-shared-radius) border-b-10 border-(--main-color-accent) bg-(--main-color)'
+                      className='absolute inset-0 rounded-(--progress-tabs-inner-radius) border-b-10 border-(--main-color-accent) bg-(--main-color)'
                       transition={{
                         type: 'spring',
                         stiffness: 300,
@@ -82,7 +82,7 @@ const ProgressTabs = () => {
                       playClick();
                     }}
                     className={cn(
-                      'relative z-10 flex cursor-pointer items-center gap-2 rounded-(--progress-tabs-shared-radius) px-6 pt-3 pb-5 text-sm font-semibold transition-colors duration-300',
+                      'relative z-10 flex cursor-pointer items-center gap-2 rounded-(--progress-tabs-inner-radius) px-6 pt-3 pb-5 text-sm font-semibold transition-colors duration-300',
                       isSelected
                         ? 'text-(--background-color)'
                         : 'text-(--secondary-color) hover:text-(--main-color)',
