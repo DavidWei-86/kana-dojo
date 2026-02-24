@@ -579,7 +579,7 @@ export default function ActiveGame<T>({
                         ? 'border-green-500 text-green-500'
                         : isChecking && !checkedResult?.isCorrect
                           ? 'border-red-500 text-red-500'
-                          : 'border-(--border-color) text-(--text-color) focus:border-(--main-color)',
+                          : 'border-(--border-color) text-(--text-color) focus:border-(--secondary-color) focus-visible:outline-[2px] focus-visible:outline-solid focus-visible:outline-(--secondary-color)',
                     )}
                   />
                 </div>

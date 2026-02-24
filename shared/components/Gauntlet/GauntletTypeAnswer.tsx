@@ -43,10 +43,10 @@ export default function GauntletTypeAnswer({
         className={clsx(
           'w-full max-w-xs sm:max-w-sm md:max-w-md',
           'rounded-2xl px-5 py-4',
-          'rounded-2xl border border-(--border-color) bg-(--card-color)',
+          'rounded-3xl border border-(--border-color) bg-(--card-color)',
           'text-top text-left text-lg font-medium lg:text-xl',
           'text-(--secondary-color) placeholder:text-base placeholder:font-normal placeholder:text-(--secondary-color)/40',
-          'resize-none focus:outline-none',
+          'resize-none focus:outline-none focus-visible:outline-[2px] focus-visible:outline-solid focus-visible:outline-(--secondary-color)',
           'transition-colors duration-200 ease-out',
           disabled && 'cursor-not-allowed opacity-60',
         )}
