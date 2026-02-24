@@ -180,7 +180,7 @@ export default function StatsPage({ className }: StatsPageProps) {
             Track your Japanese learning journey
           </p>
         </div>
-        <ActionButton
+        {/* <ActionButton
           onClick={handleResetClick}
           colorScheme='secondary'
           borderColorScheme='secondary'
@@ -190,7 +190,7 @@ export default function StatsPage({ className }: StatsPageProps) {
         >
           <Trash className='h-4 w-4' />
           Reset
-        </ActionButton>
+        </ActionButton> */}
       </motion.div>
 
       {/* Reset Confirmation Dialog */}

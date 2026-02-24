@@ -33,7 +33,7 @@ export const AchievementCard = ({
         'relative overflow-hidden rounded-2xl p-6',
         isUnlocked
           ? 'bg-(--card-color)'
-          : 'bg-(--background-color) opacity-80',
+          : 'bg-(--background-color) opacity-80 border border-(--border-color)',
       )}
     >
         {/* Gradient overlay for unlocked achievements */}
