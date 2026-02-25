@@ -86,7 +86,7 @@
     "english": "Please look up unknown words in a dictionary before asking.",
     "jlpt": "N4",
     "id": 10,
-    "issued": false,
+    "issued": true,
     "completed": false
   }
 ]
