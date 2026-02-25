@@ -302,19 +302,19 @@
   {
     "id": 51,
     "text": "\"〜というより\" means \"rather than\" or \"more like\".",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
     "id": 52,
     "text": "\"〜おかげで\" expresses gratitude for a cause, \"thanks to\".",
-    "completed": false,
+    "completed": true,
     "issued": false
   },
   {
     "id": 53,
     "text": "\"〜せいで\" indicates a negative cause, \"because of\".",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
