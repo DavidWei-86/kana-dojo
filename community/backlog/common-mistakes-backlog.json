@@ -20,7 +20,7 @@
     "correct": "私は昨日東京に行きました。",
     "explanation": "Use past tense for completed past actions.",
     "id": 3,
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
