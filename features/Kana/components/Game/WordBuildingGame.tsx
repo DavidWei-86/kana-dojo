@@ -23,6 +23,7 @@ import {
   useWordBuildingActionKey,
 } from '@/shared/components/Game/wordBuildingShared';
 import WordBuildingTilesGrid from '@/shared/components/Game/WordBuildingTilesGrid';
+import useClassicSessionStore from '@/shared/store/useClassicSessionStore';
 
 const random = new Random();
 const adaptiveSelector = getGlobalAdaptiveSelector();
@@ -57,6 +58,7 @@ const WordBuildingGame = ({
   onCorrect: externalOnCorrect,
   onWrong: externalOnWrong,
 }: WordBuildingGameProps) => {
+  const logAttempt = useClassicSessionStore(state => state.logAttempt);
   // Smart reverse mode - used when not controlled externally
   const {
     isReverse: internalIsReverse,
@@ -296,6 +298,19 @@ const WordBuildingGame = ({
       if (externalIsReverse === undefined) {
         decideNextReverseMode();
       }
+      logAttempt({
+        questionId: wordData.wordChars.join(''),
+        questionPrompt: wordData.wordChars.join(''),
+        expectedAnswers: [wordData.answerChars.join('')],
+        userAnswer: placedTileIds
+          .map(id => wordData.allTiles.get(id) ?? '')
+          .join(''),
+        inputKind: 'word_building',
+        isCorrect: true,
+        timeTakenMs: answerTimeMs,
+        optionsShown: Array.from(wordData.allTiles.values()),
+        extra: { isReverse, wordLength },
+      });
     } else {
       speedStopwatch.reset();
       playErrorTwice();
@@ -321,6 +336,18 @@ const WordBuildingGame = ({
 
       // Call external callback if provided
       externalOnWrong?.();
+      logAttempt({
+        questionId: wordData.wordChars.join(''),
+        questionPrompt: wordData.wordChars.join(''),
+        expectedAnswers: [wordData.answerChars.join('')],
+        userAnswer: placedTileIds
+          .map(id => wordData.allTiles.get(id) ?? '')
+          .join(''),
+        inputKind: 'word_building',
+        isCorrect: false,
+        optionsShown: Array.from(wordData.allTiles.values()),
+        extra: { isReverse, wordLength },
+      });
     }
   }, [
     placedTileIds,
@@ -343,6 +370,9 @@ const WordBuildingGame = ({
     externalIsReverse,
     decideNextReverseMode,
     recordReverseModeWrong,
+    logAttempt,
+    isReverse,
+    wordLength,
     addCorrectAnswerTime,
     recordAnswerTime,
     // speedStopwatch intentionally excluded - only calling methods

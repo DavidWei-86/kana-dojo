@@ -27,6 +27,7 @@ import {
   useWordBuildingActionKey,
 } from '@/shared/components/Game/wordBuildingShared';
 import WordBuildingTilesGrid from '@/shared/components/Game/WordBuildingTilesGrid';
+import useClassicSessionStore from '@/shared/store/useClassicSessionStore';
 
 const random = new Random();
 const adaptiveSelector = getGlobalAdaptiveSelector();
@@ -35,6 +36,12 @@ const adaptiveSelector = getGlobalAdaptiveSelector();
 // Kanji are in the CJK Unified Ideographs range (U+4E00 to U+9FAF)
 const containsKanji = (text: string): boolean => {
   return /[\u4E00-\u9FAF]/.test(text);
+};
+
+const normalizeOption = (value: string | undefined | null): string | null => {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
 };
 
 interface VocabWordBuildingGameProps {
@@ -58,6 +65,7 @@ const VocabWordBuildingGame = ({
   onCorrect: externalOnCorrect,
   onWrong: externalOnWrong,
 }: VocabWordBuildingGameProps) => {
+  const logAttempt = useClassicSessionStore(state => state.logAttempt);
   // Smart reverse mode - used when not controlled externally
   const {
     isReverse: internalIsReverse,
@@ -166,33 +174,48 @@ const VocabWordBuildingGame = ({
       }
 
       // Determine correct answer based on quiz type and mode
-      let correctAnswer: string;
-      let distractorSource: string[];
+      let correctAnswerRaw: string | undefined;
+      let distractorSourceRaw: Array<string | undefined>;
 
       if (effectiveQuizType === 'reading') {
         // Reading quiz: answer is always the reading
-        correctAnswer = selectedWordObj.reading;
-        distractorSource = selectedWordObjs
+        correctAnswerRaw = selectedWordObj.reading;
+        distractorSourceRaw = selectedWordObjs
           .filter(obj => obj.word !== selectedWord)
           .map(obj => obj.reading);
       } else {
         // Meaning quiz
         if (isReverse) {
           // Reverse: show meaning, answer is word
-          correctAnswer = selectedWord;
-          distractorSource = selectedWordObjs
+          correctAnswerRaw = selectedWord;
+          distractorSourceRaw = selectedWordObjs
             .filter(obj => obj.word !== selectedWord)
             .map(obj => obj.word);
         } else {
           // Normal: show word, answer is meaning
-          correctAnswer = selectedWordObj.meanings[0];
-          distractorSource = selectedWordObjs
+          correctAnswerRaw = selectedWordObj.meanings[0];
+          distractorSourceRaw = selectedWordObjs
             .filter(obj => obj.word !== selectedWord)
             .map(obj => obj.meanings[0]);
         }
       }
 
-      const distractors = distractorSource
+      const correctAnswer = normalizeOption(correctAnswerRaw);
+      if (!correctAnswer) {
+        return {
+          word: '',
+          wordObj: null as IVocabObj | null,
+          correctAnswer: '',
+          allTiles: new Map<number, string>(),
+          quizType: effectiveQuizType,
+        };
+      }
+
+      const distractors = distractorSourceRaw
+        .map(normalizeOption)
+        .filter((value): value is string => value !== null)
+        .filter(option => option !== correctAnswer)
+        .filter((option, idx, arr) => arr.indexOf(option) === idx)
         .sort(() => random.real(0, 1) - 0.5)
         .slice(0, distractorCount);
 
@@ -354,6 +377,21 @@ const VocabWordBuildingGame = ({
       if (externalIsReverse === undefined) {
         decideNextReverseMode();
       }
+      logAttempt({
+        questionId: questionData.word,
+        questionPrompt: String(
+          questionData.quizType === 'meaning' && isReverse
+            ? questionData.wordObj?.meanings?.[0] ?? questionData.word
+            : questionData.word,
+        ),
+        expectedAnswers: [questionData.correctAnswer],
+        userAnswer: String(selectedTileChar ?? ''),
+        inputKind: 'word_building',
+        isCorrect: true,
+        timeTakenMs: answerTimeMs,
+        optionsShown: Array.from(questionData.allTiles.values()),
+        extra: { isReverse, quizType: questionData.quizType },
+      });
     } else {
       speedStopwatch.reset();
       playErrorTwice();
@@ -376,6 +414,20 @@ const VocabWordBuildingGame = ({
       }
 
       externalOnWrong?.();
+      logAttempt({
+        questionId: questionData.word,
+        questionPrompt: String(
+          questionData.quizType === 'meaning' && isReverse
+            ? questionData.wordObj?.meanings?.[0] ?? questionData.word
+            : questionData.word,
+        ),
+        expectedAnswers: [questionData.correctAnswer],
+        userAnswer: String(selectedTileChar ?? ''),
+        inputKind: 'word_building',
+        isCorrect: false,
+        optionsShown: Array.from(questionData.allTiles.values()),
+        extra: { isReverse, quizType: questionData.quizType },
+      });
     }
   }, [
     placedTileIds,
@@ -397,6 +449,8 @@ const VocabWordBuildingGame = ({
     externalIsReverse,
     decideNextReverseMode,
     recordReverseModeWrong,
+    logAttempt,
+    isReverse,
     addCorrectAnswerTime,
     recordAnswerTime,
     isReverse,

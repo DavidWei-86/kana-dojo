@@ -12,5 +12,33 @@
     "english": "I protect my friends.",
     "game": "Kingdom Hearts",
     "character": "Riku"
-  }
+  },
+  {
+  "japanese": "まだ終わらない。",
+  "romaji": "Mada owaranai.",
+  "english": "It's not over yet.",
+  "game": "Kingdom Hearts",
+  "character": "Riku"
+  },
+  {
+    "japanese": "栄誉は浜辺で亡くなった",
+    "romaji": "Eiyo wa Hamabe de nakunatta",
+    "english": "Honor Died On The Beach.",
+    "game": "Ghost Of Tsushima",
+    "character": "Jin Sakai"
+  },
+  {
+    "japanese": "光はまだ消えていない。",
+    "romaji": "Hikari wa mada kiete inai.",
+    "english": "The light has not gone out.",
+    "game": "Kingdom Hearts",
+    "character": "Sora"
+  },
+  {
+  "japanese": "最後まで戦う",
+  "romaji": "Saigo made tatakau.",
+  "english": "I'll fight to the very end.",
+  "game": "Final Fantasy X",
+  "character": "Auron"
+}
 ]

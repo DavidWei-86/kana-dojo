@@ -7,8 +7,12 @@ import { useGoalTimers } from '@/shared/hooks/useGoalTimers';
 import { useClick, useCorrect, useError } from '@/shared/hooks/useAudio';
 import { shuffle } from '@/shared/lib/shuffle';
 import confetti from 'canvas-confetti';
-import { useRouter } from '@/core/i18n/routing';
 import { statsTracking } from '@/features/Progress';
+import {
+  appendAttempt,
+  finalizeSession,
+  startSession,
+} from '@/shared/lib/sessionHistory';
 
 import EmptyState from './EmptyState';
 import PreGameScreen from './PreGameScreen';
@@ -24,7 +28,6 @@ interface BlitzProps<T> {
 }
 
 export default function Blitz<T>({ config }: BlitzProps<T>) {
-  const router = useRouter();
   const pathname = usePathname();
   const isBlitzRoute = pathname?.includes('/blitz') ?? false;
 
@@ -94,11 +97,17 @@ export default function Blitz<T>({ config }: BlitzProps<T>) {
   const [currentQuestion, setCurrentQuestion] = useState<T | null>(null);
   const [userAnswer, setUserAnswer] = useState('');
   const [isFinished, setIsFinished] = useState(false);
+  const [endedReason, setEndedReason] = useState<'completed' | 'manual_quit'>(
+    'completed',
+  );
   const [lastAnswerCorrect, setLastAnswerCorrect] = useState<boolean | null>(
     null,
   );
   const [showGoalTimers, setShowGoalTimers] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const sessionIdRef = useRef<string | null>(null);
+  const sessionStartPromiseRef = useRef<Promise<string> | null>(null);
+  const finalizedRef = useRef(false);
 
   const [isBlitzBooting, setIsBlitzBooting] = useState(() => isBlitzRoute);
   const hasAutoStartedBlitz = useRef(false);
@@ -155,21 +164,38 @@ export default function Blitz<T>({ config }: BlitzProps<T>) {
 
     playClick();
     stats.reset();
+    finalizedRef.current = false;
     setIsFinished(false);
+    setEndedReason('completed');
     setUserAnswer('');
     setLastAnswerCorrect(null);
     setWrongSelectedAnswers([]);
     goalTimers.resetGoals();
     resetTimer();
     startTimer();
+    sessionStartPromiseRef.current = startSession({
+      sessionType: 'blitz',
+      dojoType,
+      gameMode: gameMode.toLowerCase(),
+      selectedSets: selectedSets || [],
+      selectedCount: items.length,
+      route: pathname || '',
+    });
+    sessionStartPromiseRef.current.then(id => {
+      sessionIdRef.current = id;
+    });
     setIsBlitzBooting(false);
   }, [
     currentQuestion,
+    dojoType,
+    gameMode,
+    pathname,
     isBlitzRoute,
     isFinished,
     isRunning,
     items.length,
     playClick,
+    selectedSets,
     goalTimers,
     resetTimer,
     startTimer,
@@ -194,10 +220,30 @@ export default function Blitz<T>({ config }: BlitzProps<T>) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestion, gameMode, isReverseActive]);
 
+  const ensureSessionId = useCallback(async (): Promise<string> => {
+    if (sessionIdRef.current) return sessionIdRef.current;
+    if (sessionStartPromiseRef.current) {
+      const id = await sessionStartPromiseRef.current;
+      sessionIdRef.current = id;
+      return id;
+    }
+    const id = await startSession({
+      sessionType: 'blitz',
+      dojoType,
+      gameMode: gameMode.toLowerCase(),
+      selectedSets: selectedSets || [],
+      selectedCount: items.length,
+      route: pathname || '',
+    });
+    sessionIdRef.current = id;
+    return id;
+  }, [dojoType, gameMode, selectedSets, items.length, pathname]);
+
   // Handle timer end
   useEffect(() => {
     if (timeLeft === 0 && !isFinished) {
       setIsFinished(true);
+      setEndedReason('completed');
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       // Track blitz stats for achievements
       statsTracking.recordBlitzSession({
@@ -206,8 +252,37 @@ export default function Blitz<T>({ config }: BlitzProps<T>) {
         correctAnswers: stats.correct,
         wrongAnswers: stats.wrong,
       });
+      if (!finalizedRef.current) {
+        finalizedRef.current = true;
+        void (async () => {
+          const sessionId = await ensureSessionId();
+          await finalizeSession({
+            sessionId,
+            endedReason: 'completed',
+            endedAbruptly: false,
+            correct: stats.correct,
+            wrong: stats.wrong,
+            bestStreak: stats.bestStreak,
+            modePayload: {
+              challengeDuration,
+              showGoalTimers,
+              goals: goalTimers.goals,
+            },
+          });
+        })();
+      }
     }
-  }, [timeLeft, isFinished, stats.correct, stats.wrong, stats.bestStreak]);
+  }, [
+    challengeDuration,
+    goalTimers.goals,
+    isFinished,
+    showGoalTimers,
+    stats.bestStreak,
+    stats.correct,
+    stats.wrong,
+    timeLeft,
+    ensureSessionId,
+  ]);
 
   // Track challenge mode usage on mount
   useEffect(() => {
@@ -223,11 +298,21 @@ export default function Blitz<T>({ config }: BlitzProps<T>) {
     }
   }, [isRunning, currentQuestion, gameMode]);
 
+  const toQuestionPrompt = useCallback(
+    (question: T) => {
+      const rendered = renderQuestion(question, isReverseActive);
+      return typeof rendered === 'string' ? rendered : getCorrectAnswer(question);
+    },
+    [renderQuestion, getCorrectAnswer, isReverseActive],
+  );
+
   // Handlers
   const handleStart = useCallback(() => {
     playClick();
     stats.reset();
+    finalizedRef.current = false;
     setIsFinished(false);
+    setEndedReason('completed');
     setUserAnswer('');
     setLastAnswerCorrect(null);
     setWrongSelectedAnswers([]);
@@ -235,6 +320,17 @@ export default function Blitz<T>({ config }: BlitzProps<T>) {
     goalTimers.resetGoals();
     resetTimer();
     setTimeout(() => startTimer(), 50);
+    sessionStartPromiseRef.current = startSession({
+      sessionType: 'blitz',
+      dojoType,
+      gameMode: gameMode.toLowerCase(),
+      selectedSets: selectedSets || [],
+      selectedCount: items.length,
+      route: pathname || '',
+    });
+    sessionStartPromiseRef.current.then(id => {
+      sessionIdRef.current = id;
+    });
     setTimeout(() => {
       if (gameMode === 'Type' && inputRef.current) {
         inputRef.current.focus();
@@ -244,17 +340,30 @@ export default function Blitz<T>({ config }: BlitzProps<T>) {
         });
       }
     }, 100);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items, gameMode]);
+  }, [items, gameMode, dojoType, pathname, selectedSets, goalTimers, playClick, resetTimer, startTimer, stats]);
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
     playClick();
-    if (isBlitzRoute) {
-      router.push(`/${dojoType}`);
-      return;
+    if (!finalizedRef.current) {
+      finalizedRef.current = true;
+      const sessionId = await ensureSessionId();
+      await finalizeSession({
+        sessionId,
+        endedReason: 'manual_quit',
+        endedAbruptly: true,
+        correct: stats.correct,
+        wrong: stats.wrong,
+        bestStreak: stats.bestStreak,
+        modePayload: {
+          challengeDuration,
+          showGoalTimers,
+          goals: goalTimers.goals,
+        },
+      });
     }
     resetTimer();
-    setIsFinished(false);
+    setEndedReason('manual_quit');
+    setIsFinished(true);
     setUserAnswer('');
     setLastAnswerCorrect(null);
     setWrongSelectedAnswers([]);
@@ -279,11 +388,31 @@ export default function Blitz<T>({ config }: BlitzProps<T>) {
         setCurrentQuestion(generateQuestionRef.current(items));
         setLastAnswerCorrect(null);
       }, 300);
+      if (sessionIdRef.current) {
+        void appendAttempt(sessionIdRef.current, {
+          questionId: getCorrectAnswer(currentQuestion),
+          questionPrompt: toQuestionPrompt(currentQuestion),
+          expectedAnswers: [getCorrectAnswer(currentQuestion)],
+          userAnswer: userAnswer.trim(),
+          inputKind: 'type',
+          isCorrect: true,
+        });
+      }
     } else {
       playError();
       stats.incrementWrong();
       setLastAnswerCorrect(false);
       setTimeout(() => setLastAnswerCorrect(null), 800);
+      if (sessionIdRef.current) {
+        void appendAttempt(sessionIdRef.current, {
+          questionId: getCorrectAnswer(currentQuestion),
+          questionPrompt: toQuestionPrompt(currentQuestion),
+          expectedAnswers: [getCorrectAnswer(currentQuestion)],
+          userAnswer: userAnswer.trim(),
+          inputKind: 'type',
+          isCorrect: false,
+        });
+      }
     }
     setUserAnswer('');
   };
@@ -303,11 +432,33 @@ export default function Blitz<T>({ config }: BlitzProps<T>) {
         setCurrentQuestion(generateQuestionRef.current(items));
         setLastAnswerCorrect(null);
       }, 300);
+      if (sessionIdRef.current) {
+        void appendAttempt(sessionIdRef.current, {
+          questionId: correctOption,
+          questionPrompt: toQuestionPrompt(currentQuestion),
+          expectedAnswers: [correctOption],
+          userAnswer: selectedOption,
+          inputKind: 'pick',
+          isCorrect: true,
+          optionsShown: shuffledOptions,
+        });
+      }
     } else {
       playError();
       stats.incrementWrong();
       setWrongSelectedAnswers(prev => [...prev, selectedOption]);
       setLastAnswerCorrect(false);
+      if (sessionIdRef.current) {
+        void appendAttempt(sessionIdRef.current, {
+          questionId: correctOption,
+          questionPrompt: toQuestionPrompt(currentQuestion),
+          expectedAnswers: [correctOption],
+          userAnswer: selectedOption,
+          inputKind: 'pick',
+          isCorrect: false,
+          optionsShown: shuffledOptions,
+        });
+      }
     }
   };
 
@@ -358,6 +509,7 @@ export default function Blitz<T>({ config }: BlitzProps<T>) {
         showGoalTimers={showGoalTimers}
         goals={goalTimers.goals}
         onRestart={handleStart}
+        endedReason={endedReason}
       />
     );
   }

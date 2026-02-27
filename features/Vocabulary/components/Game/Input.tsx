@@ -14,6 +14,7 @@ import FuriganaText from '@/shared/components/text/FuriganaText';
 import { useCrazyModeTrigger } from '@/features/CrazyMode/hooks/useCrazyModeTrigger';
 import { getGlobalAdaptiveSelector } from '@/shared/lib/adaptiveSelection';
 import { GameBottomBar } from '@/shared/components/Game/GameBottomBar';
+import useClassicSessionStore from '@/shared/store/useClassicSessionStore';
 
 // Get the global adaptive selector for weighted character selection
 const adaptiveSelector = getGlobalAdaptiveSelector();
@@ -32,6 +33,7 @@ const VocabInputGame = ({
   isHidden,
   isReverse = false,
 }: VocabInputGameProps) => {
+  const logAttempt = useClassicSessionStore(state => state.logAttempt);
   const { score, setScore } = useStatsDisplay();
   const gameStats = useGameStats();
 
@@ -196,6 +198,18 @@ const VocabInputGame = ({
     adaptiveSelector.updateCharacterWeight(correctChar, true);
     setBottomBarState('correct');
     setDisplayAnswerSummary(true);
+    logAttempt({
+      questionId: correctChar,
+      questionPrompt: correctChar,
+      expectedAnswers: Array.isArray(targetChar)
+        ? targetChar.map(v => String(v))
+        : [String(targetChar)],
+      userAnswer: inputValue.trim(),
+      inputKind: 'type',
+      isCorrect: true,
+      timeTakenMs: answerTimeMs,
+      extra: { isReverse, quizType },
+    });
   };
 
   const handleWrongAnswer = () => {
@@ -219,6 +233,17 @@ const VocabInputGame = ({
     triggerCrazyMode();
     adaptiveSelector.updateCharacterWeight(correctChar, false);
     setBottomBarState('wrong');
+    logAttempt({
+      questionId: correctChar,
+      questionPrompt: correctChar,
+      expectedAnswers: Array.isArray(targetChar)
+        ? targetChar.map(v => String(v))
+        : [String(targetChar)],
+      userAnswer: inputValue.trim(),
+      inputKind: 'type',
+      isCorrect: false,
+      extra: { isReverse, quizType },
+    });
   };
 
   const handleEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -318,7 +343,7 @@ const VocabInputGame = ({
               'rounded-2xl border border-(--border-color) bg-(--card-color)',
               'text-top text-left text-lg font-medium lg:text-xl',
               'text-(--secondary-color) placeholder:text-base placeholder:font-normal placeholder:text-(--secondary-color)/40',
-              'resize-none focus:outline-none',
+              'game-input resize-none focus:outline-none',
               'transition-colors duration-200 ease-out',
               showContinue && 'cursor-not-allowed opacity-60',
             )}

@@ -16,6 +16,7 @@ import FuriganaText from '@/shared/components/text/FuriganaText';
 import { useCrazyModeTrigger } from '@/features/CrazyMode/hooks/useCrazyModeTrigger';
 import { getGlobalAdaptiveSelector } from '@/shared/lib/adaptiveSelection';
 import { GameBottomBar } from '@/shared/components/Game/GameBottomBar';
+import useClassicSessionStore from '@/shared/store/useClassicSessionStore';
 
 // Get the global adaptive selector for weighted character selection
 const adaptiveSelector = getGlobalAdaptiveSelector();
@@ -34,6 +35,7 @@ const KanjiInputGame = ({
   isHidden,
   isReverse = false,
 }: KanjiInputGameProps) => {
+  const logAttempt = useClassicSessionStore(state => state.logAttempt);
   // Get the current JLPT level from the Kanji store
   const selectedKanjiCollection = useKanjiStore(
     state => state.selectedKanjiCollection,
@@ -230,6 +232,18 @@ const KanjiInputGame = ({
         <CircleCheck className='inline text-(--main-color)' />
       </>,
     );
+    logAttempt({
+      questionId: correctChar,
+      questionPrompt: correctChar,
+      expectedAnswers: Array.isArray(targetChar)
+        ? targetChar.map(v => String(v))
+        : [String(targetChar)],
+      userAnswer: userInput,
+      inputKind: 'type',
+      isCorrect: true,
+      timeTakenMs: answerTimeMs,
+      extra: { isReverse },
+    });
   };
 
   const handleWrongAnswer = () => {
@@ -247,6 +261,17 @@ const KanjiInputGame = ({
     adaptiveSelector.updateCharacterWeight(correctChar, false);
     incrementWrongStreak();
     setBottomBarState('wrong');
+    logAttempt({
+      questionId: correctChar,
+      questionPrompt: correctChar,
+      expectedAnswers: Array.isArray(targetChar)
+        ? targetChar.map(v => String(v))
+        : [String(targetChar)],
+      userAnswer: inputValue.trim(),
+      inputKind: 'type',
+      isCorrect: false,
+      extra: { isReverse },
+    });
   };
 
   const generateNewCharacter = () => {
@@ -357,7 +382,7 @@ const KanjiInputGame = ({
               'rounded-2xl border-1 border-(--border-color) bg-(--card-color)',
               'text-top text-left text-lg font-medium lg:text-xl',
               'text-(--secondary-color) placeholder:text-base placeholder:font-normal placeholder:text-(--secondary-color)/40',
-              'resize-none focus:outline-none',
+              'game-input resize-none focus:outline-none',
               'transition-colors duration-200 ease-out',
               showContinue && 'cursor-not-allowed opacity-60',
             )}

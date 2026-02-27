@@ -24,6 +24,7 @@ import {
   useWordBuildingActionKey,
 } from '@/shared/components/Game/wordBuildingShared';
 import WordBuildingTilesGrid from '@/shared/components/Game/WordBuildingTilesGrid';
+import useClassicSessionStore from '@/shared/store/useClassicSessionStore';
 
 const random = new Random();
 const adaptiveSelector = getGlobalAdaptiveSelector();
@@ -50,6 +51,7 @@ const KanjiWordBuildingGame = ({
   onCorrect: externalOnCorrect,
   onWrong: externalOnWrong,
 }: KanjiWordBuildingGameProps) => {
+  const logAttempt = useClassicSessionStore(state => state.logAttempt);
   // Smart reverse mode - used when not controlled externally
   const {
     isReverse: internalIsReverse,
@@ -259,6 +261,17 @@ const KanjiWordBuildingGame = ({
       if (externalIsReverse === undefined) {
         decideNextReverseMode();
       }
+      logAttempt({
+        questionId: questionData.kanjiChar,
+        questionPrompt: String(questionData.displayChar ?? questionData.kanjiChar),
+        expectedAnswers: [questionData.correctAnswer],
+        userAnswer: String(selectedTileChar ?? ''),
+        inputKind: 'word_building',
+        isCorrect: true,
+        timeTakenMs: answerTimeMs,
+        optionsShown: Array.from(questionData.allTiles.values()),
+        extra: { isReverse },
+      });
     } else {
       speedStopwatch.reset();
       playErrorTwice();
@@ -281,6 +294,16 @@ const KanjiWordBuildingGame = ({
       }
 
       externalOnWrong?.();
+      logAttempt({
+        questionId: questionData.kanjiChar,
+        questionPrompt: String(questionData.displayChar ?? questionData.kanjiChar),
+        expectedAnswers: [questionData.correctAnswer],
+        userAnswer: String(selectedTileChar ?? ''),
+        inputKind: 'word_building',
+        isCorrect: false,
+        optionsShown: Array.from(questionData.allTiles.values()),
+        extra: { isReverse },
+      });
     }
   }, [
     placedTileIds,
@@ -303,6 +326,8 @@ const KanjiWordBuildingGame = ({
     externalIsReverse,
     decideNextReverseMode,
     recordReverseModeWrong,
+    logAttempt,
+    isReverse,
     addCorrectAnswerTime,
     recordAnswerTime,
   ]);
